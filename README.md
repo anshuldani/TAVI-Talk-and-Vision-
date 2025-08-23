@@ -68,20 +68,6 @@ TAVI (Talk and Vision Assistant) is an **AI-powered multimodal assistant** desig
 
 ---
 
-## 🎨 UX & Research Insights
-
-From UX design research:
-- **Role Contributions:** UX Researcher, UX/UI Designer, and Developer.
-- **Focus Areas:** Accessibility-first design, seamless voice-driven UX, real-time multimodal feedback.
-- **Prototyping & Tools:** Figma for design, iterative user testing for refinement.
-
-### 📊 Outcomes
-- **95%** of users highlighted the need for **instant voice feedback**.
-- **80%** usability satisfaction increase in testing.
-- **85%** reported greater **confidence & independence**.
-
----
-
 ## 📦 Tech Stack
 
 - **Programming:** Python
@@ -102,14 +88,6 @@ From UX design research:
 
 - Developed as part of a **Hackathon-winning project** for Accessibility.
 - Recognized for **impact on accessibility, innovation, and real-world usability**.
-
----
-
-## 📸 Demo & Links
-
-- 📂 **Portfolio Page:** [Data Science Portfolio](https://www.datascienceportfol.io/vvoona/projects/6)  
-- 💻 **GitHub Repository:** [TAVI on GitHub](https://github.com/dhanvanth342/TAVI)  
-- 🎨 **UX/UI Showcase:** [Framer Project](https://sahithibalerao.framer.website/tavi)  
 
 ---
 
