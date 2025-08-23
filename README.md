@@ -8,7 +8,7 @@ TAVI (Talk and Vision Assistant) is an **AI-powered multimodal assistant** desig
 
 - **Purpose:** Enhance independence for visually impaired users by converting **audio and video input into enriched, accessible feedback**.
 - **Core Idea:** Always-on assistant that listens for a **wake word**, processes user input (audio or visual), and provides **instant spoken feedback**.
-- **Hackathon Origin:** Built during an Accessibility Hackathon as a **collaborative group project**.
+- **Hackathon Origin:** Built during a **Hack for Accessibility** Hackathon by **Google**, **Code Your Dreams**, and **Deaf Kids Code** as a **collaborative group project**.
 
 ---
 
