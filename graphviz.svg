@@ -1,0 +1,102 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="243pt" height="640pt" viewBox="0.00 0.00 242.77 640.00">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 636)">
+<title>SurroundingAwarenessSystem</title>
+<polygon fill="white" stroke="none" points="-4,4 -4,-636 238.77,-636 238.77,4 -4,4"/>
+<!-- A -->
+<g id="node1" class="node">
+<title>A</title>
+<path fill="none" stroke="black" d="M164.74,-632C164.74,-632 70.03,-632 70.03,-632 64.03,-632 58.03,-626 58.03,-620 58.03,-620 58.03,-578.4 58.03,-578.4 58.03,-572.4 64.03,-566.4 70.03,-566.4 70.03,-566.4 164.74,-566.4 164.74,-566.4 170.74,-566.4 176.74,-572.4 176.74,-578.4 176.74,-578.4 176.74,-620 176.74,-620 176.74,-626 170.74,-632 164.74,-632"/>
+<text text-anchor="middle" x="117.39" y="-617.2" font-family="Helvetica,sans-Serif" font-size="12.00">🎬 Input Video</text>
+<text text-anchor="middle" x="117.39" y="-602.8" font-family="Helvetica,sans-Serif" font-size="12.00">Duration: 10s</text>
+<text text-anchor="middle" x="117.39" y="-588.4" font-family="Helvetica,sans-Serif" font-size="12.00">Frame Rate: 30 fps</text>
+<text text-anchor="middle" x="117.39" y="-574" font-family="Helvetica,sans-Serif" font-size="12.00">Total Frames: 300</text>
+</g>
+<!-- B -->
+<g id="node2" class="node">
+<title>B</title>
+<path fill="none" stroke="black" d="M222.77,-530.4C222.77,-530.4 12,-530.4 12,-530.4 6,-530.4 0,-524.4 0,-518.4 0,-518.4 0,-491.2 0,-491.2 0,-485.2 6,-479.2 12,-479.2 12,-479.2 222.77,-479.2 222.77,-479.2 228.77,-479.2 234.77,-485.2 234.77,-491.2 234.77,-491.2 234.77,-518.4 234.77,-518.4 234.77,-524.4 228.77,-530.4 222.77,-530.4"/>
+<text text-anchor="middle" x="117.39" y="-515.6" font-family="Helvetica,sans-Serif" font-size="12.00">🖼️ Frame Processing</text>
+<text text-anchor="middle" x="117.39" y="-501.2" font-family="Helvetica,sans-Serif" font-size="12.00">Extract 300 frames</text>
+<text text-anchor="middle" x="117.39" y="-486.8" font-family="Helvetica,sans-Serif" font-size="12.00">Sample 1 every 20 → 15 sampled frames</text>
+</g>
+<!-- A&#45;&gt;B -->
+<g id="edge1" class="edge">
+<title>A-&gt;B</title>
+<path fill="none" stroke="black" d="M117.39,-566.14C117.39,-558.37 117.39,-550 117.39,-542.05"/>
+<polygon fill="black" stroke="black" points="120.89,-542.32 117.39,-532.32 113.89,-542.32 120.89,-542.32"/>
+</g>
+<!-- C -->
+<g id="node3" class="node">
+<title>C</title>
+<path fill="none" stroke="black" d="M197.09,-443.2C197.09,-443.2 37.68,-443.2 37.68,-443.2 31.68,-443.2 25.68,-437.2 25.68,-431.2 25.68,-431.2 25.68,-375.2 25.68,-375.2 25.68,-369.2 31.68,-363.2 37.68,-363.2 37.68,-363.2 197.09,-363.2 197.09,-363.2 203.09,-363.2 209.09,-369.2 209.09,-375.2 209.09,-375.2 209.09,-431.2 209.09,-431.2 209.09,-437.2 203.09,-443.2 197.09,-443.2"/>
+<text text-anchor="middle" x="117.39" y="-428.4" font-family="Helvetica,sans-Serif" font-size="12.00">🔍 Vision-Based Info Extraction</text>
+<text text-anchor="middle" x="117.39" y="-414" font-family="Helvetica,sans-Serif" font-size="12.00">For each of 15 frames:</text>
+<text text-anchor="middle" x="117.39" y="-399.6" font-family="Helvetica,sans-Serif" font-size="12.00">• BLIP (captioning)</text>
+<text text-anchor="middle" x="117.39" y="-385.2" font-family="Helvetica,sans-Serif" font-size="12.00">• Mistral OCR (text)</text>
+<text text-anchor="middle" x="117.39" y="-370.8" font-family="Helvetica,sans-Serif" font-size="12.00">→ Captions + Text</text>
+</g>
+<!-- B&#45;&gt;C -->
+<g id="edge2" class="edge">
+<title>B-&gt;C</title>
+<path fill="none" stroke="black" d="M117.39,-478.92C117.39,-471.56 117.39,-463.21 117.39,-454.83"/>
+<polygon fill="black" stroke="black" points="120.89,-454.98 117.39,-444.98 113.89,-454.98 120.89,-454.98"/>
+</g>
+<!-- D -->
+<g id="node4" class="node">
+<title>D</title>
+<path fill="none" stroke="black" d="M191.75,-327.2C191.75,-327.2 43.02,-327.2 43.02,-327.2 37.02,-327.2 31.02,-321.2 31.02,-315.2 31.02,-315.2 31.02,-273.6 31.02,-273.6 31.02,-267.6 37.02,-261.6 43.02,-261.6 43.02,-261.6 191.75,-261.6 191.75,-261.6 197.75,-261.6 203.75,-267.6 203.75,-273.6 203.75,-273.6 203.75,-315.2 203.75,-315.2 203.75,-321.2 197.75,-327.2 191.75,-327.2"/>
+<text text-anchor="middle" x="117.39" y="-312.4" font-family="Helvetica,sans-Serif" font-size="12.00">🧠 LLM Processing</text>
+<text text-anchor="middle" x="117.39" y="-298" font-family="Helvetica,sans-Serif" font-size="12.00">Concatenate all text</text>
+<text text-anchor="middle" x="117.39" y="-283.6" font-family="Helvetica,sans-Serif" font-size="12.00">→ LLM input</text>
+<text text-anchor="middle" x="117.39" y="-269.2" font-family="Helvetica,sans-Serif" font-size="12.00">Output: Awareness Summary</text>
+</g>
+<!-- C&#45;&gt;D -->
+<g id="edge3" class="edge">
+<title>C-&gt;D</title>
+<path fill="none" stroke="black" d="M117.39,-362.74C117.39,-354.91 117.39,-346.66 117.39,-338.71"/>
+<polygon fill="black" stroke="black" points="120.89,-338.89 117.39,-328.89 113.89,-338.89 120.89,-338.89"/>
+</g>
+<!-- E -->
+<g id="node5" class="node">
+<title>E</title>
+<path fill="none" stroke="black" d="M188.42,-225.6C188.42,-225.6 46.36,-225.6 46.36,-225.6 40.36,-225.6 34.36,-219.6 34.36,-213.6 34.36,-213.6 34.36,-186.4 34.36,-186.4 34.36,-180.4 40.36,-174.4 46.36,-174.4 46.36,-174.4 188.42,-174.4 188.42,-174.4 194.42,-174.4 200.42,-180.4 200.42,-186.4 200.42,-186.4 200.42,-213.6 200.42,-213.6 200.42,-219.6 194.42,-225.6 188.42,-225.6"/>
+<text text-anchor="middle" x="117.39" y="-210.8" font-family="Helvetica,sans-Serif" font-size="12.00">🔊 Audio Generation</text>
+<text text-anchor="middle" x="117.39" y="-196.4" font-family="Helvetica,sans-Serif" font-size="12.00">Convert summary to speech</text>
+<text text-anchor="middle" x="117.39" y="-182" font-family="Helvetica,sans-Serif" font-size="12.00">→ Spoken Audio Summary</text>
+</g>
+<!-- D&#45;&gt;E -->
+<g id="edge4" class="edge">
+<title>D-&gt;E</title>
+<path fill="none" stroke="black" d="M117.39,-261.34C117.39,-253.57 117.39,-245.2 117.39,-237.25"/>
+<polygon fill="black" stroke="black" points="120.89,-237.52 117.39,-227.52 113.89,-237.52 120.89,-237.52"/>
+</g>
+<!-- F -->
+<g id="node6" class="node">
+<title>F</title>
+<path fill="none" stroke="black" d="M218.05,-138.4C218.05,-138.4 16.73,-138.4 16.73,-138.4 10.73,-138.4 4.73,-132.4 4.73,-126.4 4.73,-126.4 4.73,-99.2 4.73,-99.2 4.73,-93.2 10.73,-87.2 16.73,-87.2 16.73,-87.2 218.05,-87.2 218.05,-87.2 224.05,-87.2 230.05,-93.2 230.05,-99.2 230.05,-99.2 230.05,-126.4 230.05,-126.4 230.05,-132.4 224.05,-138.4 218.05,-138.4"/>
+<text text-anchor="middle" x="117.39" y="-123.6" font-family="Helvetica,sans-Serif" font-size="12.00">🗣️ Audio Chatbot Interaction</text>
+<text text-anchor="middle" x="117.39" y="-109.2" font-family="Helvetica,sans-Serif" font-size="12.00">Wake Word Detection (e.g., 'Hey Chat')</text>
+<text text-anchor="middle" x="117.39" y="-94.8" font-family="Helvetica,sans-Serif" font-size="12.00">→ Engage User</text>
+</g>
+<!-- E&#45;&gt;F -->
+<g id="edge5" class="edge">
+<title>E-&gt;F</title>
+<path fill="none" stroke="black" d="M117.39,-174.36C117.39,-166.74 117.39,-158.19 117.39,-149.96"/>
+<polygon fill="black" stroke="black" points="120.89,-150.2 117.39,-140.2 113.89,-150.2 120.89,-150.2"/>
+</g>
+<!-- G -->
+<g id="node7" class="node">
+<title>G</title>
+<path fill="none" stroke="black" d="M201.09,-51.2C201.09,-51.2 33.68,-51.2 33.68,-51.2 27.68,-51.2 21.68,-45.2 21.68,-39.2 21.68,-39.2 21.68,-12 21.68,-12 21.68,-6 27.68,0 33.68,0 33.68,0 201.09,0 201.09,0 207.09,0 213.09,-6 213.09,-12 213.09,-12 213.09,-39.2 213.09,-39.2 213.09,-45.2 207.09,-51.2 201.09,-51.2"/>
+<text text-anchor="middle" x="117.39" y="-36.4" font-family="Helvetica,sans-Serif" font-size="12.00">🎧 Audio Q&amp;A</text>
+<text text-anchor="middle" x="117.39" y="-22" font-family="Helvetica,sans-Serif" font-size="12.00">User questions → Audio answers</text>
+<text text-anchor="middle" x="117.39" y="-7.6" font-family="Helvetica,sans-Serif" font-size="12.00">Based on LLM context</text>
+</g>
+<!-- F&#45;&gt;G -->
+<g id="edge6" class="edge">
+<title>F-&gt;G</title>
+<path fill="none" stroke="black" d="M117.39,-87.16C117.39,-79.54 117.39,-70.99 117.39,-62.76"/>
+<polygon fill="black" stroke="black" points="120.89,-63 117.39,-53 113.89,-63 120.89,-63"/>
+</g>
+</g>
+</svg>
