@@ -10,6 +10,16 @@ Visually impaired users navigating unfamiliar environments can't glance at somet
 
 ---
 
+## Why this is hard
+
+A single TAVI response chains five systems in sequence: Porcupine wake word detection (local), PyAudio recording, Whisper API (STT), GPT-4o-mini intent routing, then either a direct Groq LLaMA reply or the full video branch — BLIP captioning (local model), Mistral OCR (API), Groq summarization (API), and pyttsx3 TTS (local). Each step can fail silently.
+
+The hard constraint is that the user has no screen. They're standing somewhere waiting in silence. A 15-second hang or a misrouted intent isn't a UX inconvenience — it's disorienting. Every failure path needs an audio fallback, and the intent classifier has to be right without a confirmation step.
+
+The threading model is also non-trivial. Kivy's event loop, PyAudio's stream callbacks, and OpenCV's frame capture all want to run on the main thread. Wake word detection runs in a background daemon thread; any UI update from that thread crashes the app without a traceback. All Kivy mutations route through `Clock.schedule_once`.
+
+---
+
 ## ✨ Key Features
 
 ### 🎙 Continuous Voice Interaction
