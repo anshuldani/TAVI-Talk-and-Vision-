@@ -77,19 +77,41 @@ The **frontend** (`frontend/main.py`) is a Kivy app that owns wake word detectio
 
 ---
 
-## 📦 Tech Stack
+## Quickstart
 
-- **Programming:** Python
-- **Frontend:** Kivy
-- **Backend:** FastAPI
-- **AI Models:** 
-  - OpenAI Whisper (speech-to-text)
-  - Hugging Face BLIP (image captioning)
-  - ChatGroq LLM (summarization & intent reasoning)
-  - OCR for text recognition
-  - pyttsx3 (text-to-speech)
-- **Wake Word Detection:** Porcupine
-- **UI/UX:** Figma, Framer prototypes
+**Prerequisites:** Python 3.10+, a webcam, a microphone, and API keys for OpenAI, Porcupine, Mistral, and Groq.
+
+```bash
+git clone https://github.com/anshuldani/TAVI-Talk-and-Vision-
+cd TAVI-Talk-and-Vision-
+pip install -r backend/requirements.txt
+```
+
+Create `.env` in the project root:
+
+```env
+OPENAI_API_KEY=sk-...
+PORCUPINE_ACCESS_KEY=...
+MISTRAL_API_KEY=...
+GROQ_API_KEY=...
+BACKEND_URL=http://localhost:8000
+```
+
+Start the backend:
+
+```bash
+cd backend
+uvicorn app:app --reload --port 8000
+```
+
+Start the frontend (separate terminal):
+
+```bash
+cd frontend
+python main.py
+```
+
+Say **"Jarvis"** to wake TAVI. Then speak your request. Saying "look around" or "what do you see" triggers the full video pipeline with a spoken scene description.
 
 ---
 
