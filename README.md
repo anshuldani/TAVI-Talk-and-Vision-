@@ -1,6 +1,6 @@
-# TAVI – Talkative Vision Assistant for the Visually Impaired
+# TAVI — Talk and Vision Assistant
 
-TAVI (Talk and Vision Assistant) is an **AI-powered multimodal assistant** designed to empower **visually impaired individuals** with **real-time situational awareness**. By combining **voice interaction, video processing, and accessible UI design**, TAVI bridges the gap between the physical world and digital assistance, fostering **navigation independence, safety, and confidence**.
+Winner, Google Hack4Access 2024 (hosted by Google, Code Your Dreams, and Deaf Kids Code). TAVI is a multimodal AI assistant for visually impaired users: say the wake word, ask what's around you, and get a spoken scene description back — no screen required.
 
 ---
 
