@@ -4,11 +4,9 @@ Winner, Google Hack4Access 2024 (hosted by Google, Code Your Dreams, and Deaf Ki
 
 ---
 
-## 🚀 Overview
+## The problem
 
-- **Purpose:** Enhance independence for visually impaired users by converting **audio and video input into enriched, accessible feedback**.
-- **Core Idea:** Always-on assistant that listens for a **wake word**, processes user input (audio or visual), and provides **instant spoken feedback**.
-- **Hackathon Origin:** Built during a **Hack for Accessibility** Hackathon by **Google**, **Code Your Dreams**, and **Deaf Kids Code** as a **collaborative group project**.
+Visually impaired users navigating unfamiliar environments can't glance at something to understand it. Existing screen readers don't help with the physical world. TAVI fills that gap: it's always listening, and when you ask, it captures what the camera sees, reads any text in frame, and speaks a coherent summary back — no touch input, no display, no sighted help needed.
 
 ---
 
