@@ -123,20 +123,16 @@ Say **"Jarvis"** to wake TAVI. Then speak your request. Saying "look around" or 
 
 ---
 
-## 👥 Team
+## What's next
 
-TAVI was developed by a collaborative team of engineers, designers, and researchers during a hackathon, with contributions in:
-- AI/ML Model Integration
-- Frontend & Backend Development
-- UX Research & UI Design
-- Accessibility Testing
+- Replace pyttsx3 with a higher-quality local TTS model to reduce robotic output
+- Stream Groq responses as audio chunks instead of waiting for the full summary
+- Add GPS integration for turn-by-turn navigation overlay in scene descriptions
+- Multilingual support via Whisper's built-in language detection
 
 ---
 
-## 🔮 Future Improvements
+## Team
 
-- Integration with **navigation systems (GPS)**.
-- Support for **wearable devices**.
-- Improved **real-time streaming efficiency**.
-- Expanded **multilingual voice support**.
+Built at Google Hack4Access 2024. AI/ML pipeline integration, FastAPI backend, and Kivy frontend by Anshul Dani.
 
