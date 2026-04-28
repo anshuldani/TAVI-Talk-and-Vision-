@@ -115,10 +115,11 @@ Say **"Jarvis"** to wake TAVI. Then speak your request. Saying "look around" or 
 
 ---
 
-## 🏆 Achievements
+## Results
 
-- Developed as part of a **Hackathon-winning project** for Accessibility.
-- Recognized for **impact on accessibility, innovation, and real-world usability**.
+- **Winner, Google Hack4Access 2024** — judged on accessibility impact, technical innovation, and real-world usability across teams from Code Your Dreams and Deaf Kids Code partner programs.
+- End-to-end latency for a General intent response: ~3–5 seconds.
+- End-to-end latency for a Record (video + scene description) response: ~8–12 seconds on a standard network connection.
 
 ---
 
