@@ -20,29 +20,20 @@ The threading model is also non-trivial. Kivy's event loop, PyAudio's stream cal
 
 ---
 
-## ✨ Key Features
+## Stack
 
-### 🎙 Continuous Voice Interaction
-- Wake-word detection via **Porcupine** (`"Hello Assistant"` / `"I am done Assistant"`).
-- **Whisper API** transcribes user speech to text.
-- GPT-based **intent classification** (Record, General, Fallback, or TAVI-specific).
-
-### 📷 Multimodal Video & Audio Processing
-- **Record Mode**:
-  - Captures video frames.
-  - **Image captioning** using Hugging Face’s **BLIP model**.
-  - **OCR** for text extraction.
-  - **Summarization** with ChatGroq LLM.
-  - **Text-to-speech output** via `pyttsx3`.
-- Non-record intents: Direct GPT-based audio response without video capture.
-
-### 📱 Accessible Chat-Style UI
-- Built using **Kivy**.
-- Displays:
-  - User queries (transcribed text).
-  - Assistant responses.
-  - Media previews (video/audio).
-- Continuous interaction loop (auto-reactivates microphone after each turn).
+| Layer | Technology |
+|---|---|
+| Frontend | Python, Kivy (PyQt-style cross-platform UI) |
+| Backend | Python, FastAPI |
+| Wake word | Porcupine (`pvporcupine`) — keyword: "Jarvis" |
+| Speech-to-text | OpenAI Whisper API |
+| Intent routing | GPT-4o-mini |
+| Image captioning | BLIP (`Salesforce/blip-image-captioning-base`, local) |
+| OCR | Mistral OCR API |
+| LLM summarization | Groq — LLaMA 3.3 70B Versatile |
+| Text-to-speech | pyttsx3 (local, offline) |
+| Video processing | OpenCV |
 
 ---
 
