@@ -46,33 +46,43 @@ The threading model is also non-trivial. Kivy's event loop, PyAudio's stream cal
 
 ---
 
-## 🛠 Technical Architecture
+## Architecture
 
-### Backend
-- **FastAPI** server with endpoints:
-  - `/process_audio/`
-  - `/process_video/`
-- Handles transcription, intent detection, and multimodal workflows.
+```
+[background thread]                    [main thread]
+Porcupine wake word detection
+          │
+          ▼ wake word detected
+    PyAudio recording (5s)
+          │
+          ▼
+   POST /process_audio/  ──────────────► FastAPI backend
+                                               │
+                                         Whisper STT
+                                               │
+                                         GPT-4o-mini intent routing
+                                               │
+                              ┌────────────────┴────────────────┐
+                              ▼                                  ▼
+                          Record                          General / Fallback
+                              │                                  │
+                    OpenCV frame extraction            Groq LLaMA direct reply
+                    BLIP caption (local, per frame)            │
+                    Mistral OCR (API, per frame)                ▼
+                    Groq LLaMA summarization             pyttsx3 TTS
+                              │                                  │
+                              ▼                                  ▼
+                        pyttsx3 TTS                     spoken response
+                              │
+                              ▼
+                    spoken scene description
+```
 
-### Frontend
-- **Kivy application** in `frontend/`:
-  - Wake-word detection.
-  - Audio capture & UI rendering.
-  - Chat-style interface for accessibility.
+The **backend** (`backend/app.py`) is a FastAPI server with two endpoints:
+- `POST /process_audio/` — STT + intent routing + LLM response
+- `POST /process_video/` — frame extraction + BLIP + OCR + summarization
 
-### Workflow
-1. **Audio Input** → Whisper transcription → GPT intent detection.
-2. **Intent: Record** → Capture video → BLIP captions + OCR → LLM summary → pyttsx3 voice output.
-3. **Intent: General** → Direct GPT-based spoken response.
-
-
-### Configurations
-- `.env` file stores API keys and configs:
-  - Hugging Face
-  - OpenAI
-  - Groq / Mistral
-  - Porcupine
-  - Backend URL
+The **frontend** (`frontend/main.py`) is a Kivy app that owns wake word detection, audio recording, video capture, and the chat-style UI. It calls the backend for all model inference.
 
 ---
 
