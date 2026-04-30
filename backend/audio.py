@@ -58,7 +58,7 @@ class AudioProcessing:
         """
         try:
             with open(audio_path, "rb") as audio_file:
-                transcript_response = self.openai_client.audio.translations.create(
+                transcript_response = self.openai_client.audio.transcriptions.create(
                     model="whisper-1",
                     file=audio_file
                 )
