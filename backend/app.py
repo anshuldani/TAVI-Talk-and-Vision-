@@ -7,8 +7,8 @@ from fastapi import FastAPI, UploadFile, File, HTTPException
 from fastapi.responses import FileResponse, JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 
-from processing import SurroundingAwarenessProcessor
-from audio_processing import AudioProcessing, GLOBAL_TEXT_SUMMARY
+from video import SurroundingAwarenessProcessor
+from audio import AudioProcessing, GLOBAL_TEXT_SUMMARY
 
 # Set up logging for the API. Only errors will be printed.
 logging.basicConfig(level=logging.ERROR)
