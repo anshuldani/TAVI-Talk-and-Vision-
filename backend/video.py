@@ -1,30 +1,19 @@
 import os
 import cv2
-import torch
 import logging
 import tempfile
-from pathlib import Path
 from dotenv import load_dotenv
 import base64
-# The following imports for local BLIP model are retained for reference but are no longer used:
-from transformers import BlipProcessor, BlipForConditionalGeneration
-from mistralai import Mistral  # Ensure this package is installed
+from mistralai import Mistral
 import pyttsx3
-import requests  # In case needed later; kept for debugging/logging purposes
-from openai import OpenAI
 from PIL import Image
-from langchain_groq import ChatGroq  # New import for ChatGroq integration
-from huggingface_hub import InferenceClient  # New import for Hugging Face inference
+from langchain_groq import ChatGroq
+from huggingface_hub import InferenceClient
 
-# Load environment variables
 load_dotenv()
 
-# Set up logging. Only errors and warnings will be printed.
 logging.basicConfig(level=logging.ERROR)
 logger = logging.getLogger(__name__)
-
-# Set device to CUDA if available
-device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
 
 
 class SurroundingAwarenessProcessor:
