@@ -169,8 +169,8 @@ class SurroundingAwarenessProcessor:
                     "image_url": f"data:image/jpeg;base64,{base64_image}"
                 }
             )
-            # Assuming the response contains the text as a string; adjust if necessary.
-            ocr_text = ocr_response
+            if hasattr(ocr_response, 'pages') and ocr_response.pages:
+                ocr_text = "\n".join(page.markdown for page in ocr_response.pages)
         except Exception as e:
             logger.error(f"Error in OCR processing: {e}")
         finally:
