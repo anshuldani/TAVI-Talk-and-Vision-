@@ -126,9 +126,10 @@ class MyKivyApp(App):
         Posts the recorded audio file to the /process_audio/ endpoint.
         """
         try:
-            files = {'file': open(audio_filepath, 'rb')}
-            url = f"{BACKEND_URL}/process_audio/"
-            response = requests.post(url, files=files)
+            with open(audio_filepath, 'rb') as audio_file:
+                files = {'file': audio_file}
+                url = f"{BACKEND_URL}/process_audio/"
+                response = requests.post(url, files=files)
             if response.status_code == 200:
                 data = response.json()
                 self.process_audio_response(data)
@@ -215,9 +216,10 @@ class MyKivyApp(App):
             Clock.schedule_once(lambda dt: self.add_message("Just a moment... I’m processing what’s around you.", sender="Jarvis"))
             
             # Send the video file to process_video API
-            files = {'file': open(video_filename, 'rb')}
-            url = f"{BACKEND_URL}/process_video/"
-            response = requests.post(url, files=files)
+            with open(video_filename, 'rb') as video_file:
+                files = {'file': video_file}
+                url = f"{BACKEND_URL}/process_video/"
+                response = requests.post(url, files=files)
             if response.status_code == 200:
                 video_data = response.json()
                 text_summary = video_data.get("text_summary", "")
