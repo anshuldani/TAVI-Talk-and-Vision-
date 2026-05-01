@@ -47,7 +47,7 @@ async def process_video(file: UploadFile = File(...)):
             content = await file.read()
             f.write(content)
         
-        loop = asyncio.get_event_loop()
+        loop = asyncio.get_running_loop()
         video_process_result = await loop.run_in_executor(None, processor.process_video, temp_file_path)
         combined_text = video_process_result.get("combined_text", "")
         if not combined_text:
@@ -100,7 +100,7 @@ async def process_audio(file: UploadFile = File(...)):
             content = await file.read()
             f.write(content)
         
-        loop = asyncio.get_event_loop()
+        loop = asyncio.get_running_loop()
         audio_result = await loop.run_in_executor(None, audio_processor.process_audio, temp_file_path)
         return audio_result
     except Exception as e:
