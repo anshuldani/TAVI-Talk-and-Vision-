@@ -9,7 +9,6 @@ import base64
 from transformers import BlipProcessor, BlipForConditionalGeneration  # AutoProcessor, BlipForQuestionAnswering 
 from mistralai import Mistral  # Ensure this package is installed
 import pyttsx3
-import requests  # In case needed later; kept for debugging/logging purposes
 from openai import OpenAI
 from PIL import Image
 from langchain_groq import ChatGroq  # New import for ChatGroq integration
@@ -264,6 +263,4 @@ class SurroundingAwarenessProcessor:
         except Exception as e:
             logger.error(f"Error generating audio: {e}")
             return False
-        
 
-# The below functions are to process 
