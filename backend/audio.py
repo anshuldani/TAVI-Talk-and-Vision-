@@ -5,7 +5,6 @@ import tempfile
 from dotenv import load_dotenv
 
 import pyttsx3
-import requests  # in case needed
 from openai import OpenAI
 from langchain_groq import ChatGroq
 
