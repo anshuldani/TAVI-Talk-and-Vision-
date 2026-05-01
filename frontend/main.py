@@ -2,7 +2,6 @@ import os
 import uuid
 import threading
 import time
-import json
 import requests
 import wave
 import cv2  # OpenCV for video recording
