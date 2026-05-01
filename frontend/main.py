@@ -106,8 +106,7 @@ class MyKivyApp(App):
         pa.terminate()
         
         temp_dir = "temp_uploads"
-        if not os.path.exists(temp_dir):
-            os.makedirs(temp_dir)
+        os.makedirs(temp_dir, exist_ok=True)
         filename = os.path.join(temp_dir, f"{uuid.uuid4()}_input.wav")
         wf = wave.open(filename, 'wb')
         wf.setnchannels(CHANNELS)
@@ -192,8 +191,7 @@ class MyKivyApp(App):
             # Define video codec and output file
             fourcc = cv2.VideoWriter_fourcc(*'mp4v')
             temp_dir = "temp_uploads"
-            if not os.path.exists(temp_dir):
-                os.makedirs(temp_dir)
+            os.makedirs(temp_dir, exist_ok=True)
             video_filename = os.path.join(temp_dir, f"{uuid.uuid4()}_video.mp4")
             fps = 20.0
             frame_width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
@@ -241,7 +239,6 @@ class MyKivyApp(App):
         Adds a Video widget to the chat UI to display the recorded video.
         The video will remain in the UI until the user closes the app.
         """
-        from kivy.uix.video import Video
         video_widget = Video(source=video_filepath, state='play', options={'eos': 'loop'}, size_hint_y=None, height='200dp')
         self.chat_screen.ids.chat_box.add_widget(video_widget)
         Clock.schedule_once(lambda dt: self.add_message("Saving your video in our chat", sender="app"))
