@@ -1,14 +1,18 @@
-import os
-import cv2
-import logging
-import tempfile
-from dotenv import load_dotenv
 import base64
-from mistralai import Mistral
+import logging
+import os
+import tempfile
+from typing import Any, Dict, List, TypedDict
+
+import cv2
+import numpy as np
 import pyttsx3
-from PIL import Image
-from langchain_groq import ChatGroq
+from dotenv import load_dotenv
 from huggingface_hub import InferenceClient
+from langchain_groq import ChatGroq
+from mistralai import Mistral
+from PIL import Image
+
 
 load_dotenv()
 
@@ -16,16 +20,26 @@ logging.basicConfig(level=logging.ERROR)
 logger = logging.getLogger(__name__)
 
 
+class FrameDetail(TypedDict):
+    frame_index: int
+    caption: str
+    ocr: str
+
+
+class VideoPipelineResult(TypedDict):
+    combined_text: str
+    frame_details: List[FrameDetail]
+
+
 class SurroundingAwarenessProcessor:
-    def __init__(self, sampling_rate: int = 40):
-        """
-        Initialize the required models and clients once.
-        This includes:
-          - Hugging Face InferenceClient for image captioning using BLIP
-          - Mistral OCR client
-          - TTS engine via pyttsx3
-          - ChatGroq-based LLM client
-        """
+    """Caption + OCR + summarise a short clip into a single paragraph the
+    frontend can read aloud.
+
+    Pipeline: OpenCV frame extraction → BLIP captioning (HF Inference) +
+    Mistral OCR per frame → Groq LLaMA summarisation → pyttsx3 TTS.
+    """
+
+    def __init__(self, sampling_rate: int = 40) -> None:
         self.sampling_rate = sampling_rate
 
         # Initialize Hugging Face InferenceClient for BLIP captioning
@@ -78,10 +92,10 @@ class SurroundingAwarenessProcessor:
 
         # The system prompt for LLM summarization is defined elsewhere if needed.
     
-    def extract_frames(self, video_path: str) -> list:
-        """
-        Extract frames from the input video using OpenCV.
-        Sampling strategy: select one frame every 'sampling_rate' frames.
+    def extract_frames(self, video_path: str) -> List[np.ndarray]:
+        """Return one frame per ``sampling_rate`` frames as BGR ndarrays.
+
+        Empty list on read failure (logged).
         """
         frames = []
         try:
@@ -108,11 +122,7 @@ class SurroundingAwarenessProcessor:
         return frames
 
     def get_caption(self, image: Image.Image) -> str:
-        """
-        Use the Hugging Face InferenceClient to generate a caption for the image.
-        The image is saved to a temporary file and its path is passed to the inference API.
-        The API returns an object from which we extract the caption in 'generated_text'.
-        """
+        """BLIP image-to-text caption via HF Inference. "" on failure."""
         try:
             # Save the PIL image to a temporary file
             with tempfile.NamedTemporaryFile(suffix=".jpg", delete=False) as tmp:
@@ -131,16 +141,14 @@ class SurroundingAwarenessProcessor:
             logger.error(f"Error in Hugging Face inference caption generation: {e}")
             return ""
 
-    def get_ocr_text(self, frame: any) -> str:
-        """
-        Save the frame as a temporary file, encode it in base64, and perform OCR extraction
-        using the Mistral OCR process.
-        The image is sent as a data URI (base64 string) using "image_url" type.
+    def get_ocr_text(self, frame: np.ndarray) -> str:
+        """Mistral OCR on a single BGR frame. Returns concatenated page
+        markdown, or "" on failure.
         """
         ocr_text = ""
         temp_filename = None
 
-        def encode_image(image_path):
+        def encode_image(image_path: str) -> str | None:
             """Encode the image at the given path to a base64 string."""
             try:
                 with open(image_path, "rb") as image_file:
@@ -181,16 +189,14 @@ class SurroundingAwarenessProcessor:
                     logger.warning(f"Could not remove temporary file: {e}")
         return ocr_text
 
-    def process_video(self, video_path: str) -> dict:
+    def process_video(self, video_path: str) -> VideoPipelineResult:
+        """Run the per-frame caption + OCR pipeline.
+
+        ``combined_text`` is what gets handed to ``generate_llm_summary``;
+        ``frame_details`` is for debugging / inspection.
         """
-        Process the entire video:
-          - Extract frames
-          - Generate caption (via Hugging Face Inference API) and perform OCR (via Mistral OCR) for each sampled frame
-          - Aggregate the outputs into combined text for summarization.
-        Returns a dictionary with keys 'combined_text' and 'frame_details' for debugging.
-        """
-        combined_texts = []
-        frame_details = []
+        combined_texts: List[str] = []
+        frame_details: List[FrameDetail] = []
 
         frames = self.extract_frames(video_path)
         if not frames:
@@ -213,9 +219,7 @@ class SurroundingAwarenessProcessor:
         return {"combined_text": all_text, "frame_details": frame_details}
 
     def generate_llm_summary(self, combined_text: str) -> str:
-        """
-        Generate a surrounding awareness summary using ChatGroq (LLM).
-        """
+        """Groq LLaMA: 100-150 word natural-language scene summary, or ""."""
         try:
             system_prompt = """
                 You are a virtual AI assistant designed to help visually impaired individuals by enhancing their situational awareness. 
@@ -237,9 +241,7 @@ class SurroundingAwarenessProcessor:
             return ""
 
     def generate_audio(self, text: str, output_path: str = "output.mp3") -> bool:
-        """
-        Convert the LLM summary text into speech using pyttsx3 and save as an MP3 file.
-        """
+        """pyttsx3 TTS to ``output_path``. False if the engine raises."""
         try:
             self.tts_engine.save_to_file(text, output_path)
             self.tts_engine.runAndWait()
