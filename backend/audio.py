@@ -1,25 +1,47 @@
-import os
 import json
 import logging
-import tempfile
-from dotenv import load_dotenv
+import os
+from typing import Dict, TypedDict
 
 import pyttsx3
-from openai import OpenAI
+from dotenv import load_dotenv
 from langchain_groq import ChatGroq
+from openai import OpenAI
 
-# Load environment variables
+
 load_dotenv()
 
-# Set up logging (only errors and warnings are shown)
 logging.basicConfig(level=logging.ERROR)
 logger = logging.getLogger(__name__)
 
-# Global text summary store
-GLOBAL_TEXT_SUMMARY = {"latest": ""}
+
+class IntentFlags(TypedDict):
+    Record: bool
+    General: bool
+    Fallback: bool
+    Tavi: bool
+
+
+class AudioPipelineResult(TypedDict):
+    data1: IntentFlags
+    data2: str
+    data3: str
+    transcript: str
+
+
+# Set by the /process_video/ handler so subsequent intent_recognition calls
+# can ground "Tavi" queries in the user's most recent recorded scene.
+GLOBAL_TEXT_SUMMARY: Dict[str, str] = {"latest": ""}
+
 
 class AudioProcessing:
-    def __init__(self):
+    """Owns the OpenAI Whisper STT + intent classifier and the Groq LLaMA
+    response generator, plus the local pyttsx3 TTS engine.
+
+    Constructed once at module import in app.py and reused across requests.
+    """
+
+    def __init__(self) -> None:
         try:
             self.openai_api_key = os.getenv('OPENAI_API_KEY')
             if not self.openai_api_key:
@@ -52,8 +74,9 @@ class AudioProcessing:
             raise
 
     def speechtotext(self, audio_path: str) -> str:
-        """
-        Convert the audio file to text using OpenAI's Whisper API.
+        """Transcribe a WAV file to English text via Whisper.
+
+        Returns the transcript string, or "" on API failure (logged).
         """
         try:
             with open(audio_path, "rb") as audio_file:
@@ -68,11 +91,11 @@ class AudioProcessing:
             logger.error(f"Error in speech-to-text conversion: {e}")
             return ""
 
-    def intent_recognition(self, processed_text: str) -> dict:
+    def intent_recognition(self, processed_text: str) -> IntentFlags:
+        """Classify the transcript into one of {Record, General, Fallback, Tavi}.
 
-        """
-        Identify the user's intent using OpenAI's model.
-        Returns a JSON object with boolean flags for intents.
+        Returns a dict with exactly one flag set to True. On failure returns
+        an empty dict (caller falls back to the generic apology branch).
         """
         # Default system prompt (used if no video summary is available)
         default_system_prompt = """
@@ -159,8 +182,11 @@ class AudioProcessing:
 
 
     def text_to_speech(self, text: str, output_path: str) -> bool:
-        """
-        Convert the provided text to speech using pyttsx3 and save as an audio file.
+        """Render ``text`` to an audio file at ``output_path`` via pyttsx3.
+
+        Returns True on success (including the empty-text → empty-file
+        case used for the Record intent). Returns False if the TTS engine
+        raises.
         """
         try:
             # For empty text, generate a silent file by simply creating an empty file.
@@ -176,18 +202,22 @@ class AudioProcessing:
             logger.error(f"Error generating TTS audio: {e}")
             return False
 
-    def process_audio(self, audio_file_path: str) -> dict:
-        """
-        Main processing function for audio:
-            1. Convert audio file to text using Whisper (STT).
-            2. Use intent recognition to classify the transcript.
-            3. Based on the intent, generate response text (data2):
-                a. Record intent: return empty response.
-                b. General intent: send transcript to ChatGroq LLM for a brief answer.
-                c. Fallback intent: return a fixed fallback message.
-                d. Tavi intent: if a global text summary exists, combine it with transcript to query ChatGroq; else, return a fallback message.
-            4. Convert response text to audio (TTS) to generate data3.
-            5. Return a dictionary with data1 (intent), data2 (text response), and data3 (audio file path).
+    def process_audio(self, audio_file_path: str) -> AudioPipelineResult:
+        """End-to-end audio pipeline: STT → intent → LLM → TTS.
+
+        Steps:
+          1. Whisper STT on ``audio_file_path``
+          2. Intent classification (gpt-4o-mini)
+          3. Branch on intent:
+             - Record   → empty response (caller will record video)
+             - General  → Groq LLaMA brief answer
+             - Fallback → fixed apology
+             - Tavi     → Groq answer grounded in the latest video summary,
+                          or a "record video first" prompt if none exists
+          4. pyttsx3 TTS on the response text
+          5. Return ``{data1, data2, data3, transcript}`` where ``data3`` is
+             the relative ``/download_audio/<filename>`` URL the frontend can
+             GET back from the FastAPI server.
         """
         # Step 1: Speech-to-Text conversion
         audio_transcript = self.speechtotext(audio_file_path)
