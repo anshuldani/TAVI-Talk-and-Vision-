@@ -2,9 +2,10 @@ import os
 import uuid
 import logging
 import asyncio
+from typing import Any, Dict
 
 from fastapi import FastAPI, UploadFile, File, HTTPException
-from fastapi.responses import FileResponse, JSONResponse
+from fastapi.responses import FileResponse
 from fastapi.middleware.cors import CORSMiddleware
 
 from video import SurroundingAwarenessProcessor
@@ -30,7 +31,7 @@ processor = SurroundingAwarenessProcessor()
 audio_processor = AudioProcessing()
 
 @app.post("/process_video/")
-async def process_video(file: UploadFile = File(...)):
+async def process_video(file: UploadFile = File(...)) -> Dict[str, str]:
     """
     Accept a video file, process it through the pipeline, and return the generated text summary 
     and audio file (MP3). Also, update the global text summary so that the audio processing 
@@ -81,7 +82,7 @@ async def process_video(file: UploadFile = File(...)):
             logger.warning(f"Error cleaning up temporary file: {e}")
 
 @app.post("/process_audio/")
-async def process_audio(file: UploadFile = File(...)):
+async def process_audio(file: UploadFile = File(...)) -> Dict[str, Any]:
     """
     Accept an audio file, process it through the audio processing pipeline, and return:
     - data1: The intent recognition JSON
@@ -114,7 +115,7 @@ async def process_audio(file: UploadFile = File(...)):
             logger.warning(f"Error cleaning up temporary file: {e}")
 
 @app.get("/download_audio/{audio_filename}")
-async def download_audio(audio_filename: str):
+async def download_audio(audio_filename: str) -> FileResponse:
     """
     Endpoint to download the generated audio file.
     """
