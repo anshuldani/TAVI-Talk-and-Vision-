@@ -4,6 +4,7 @@ import threading
 import time
 import requests
 import wave
+from typing import Any, Dict, Optional
 import cv2  # OpenCV for video recording
 
 import numpy as np
@@ -46,17 +47,17 @@ class ChatScreen(BoxLayout):
     pass
 
 class MyKivyApp(App):
-    def build(self):
+    def build(self) -> ChatScreen:
         self.chat_screen = ChatScreen()
         threading.Thread(target=self.wake_word_listener, daemon=True).start()
         return self.chat_screen
 
-    def add_message(self, message, sender="system"):
+    def add_message(self, message: str, sender: str = "system") -> None:
         lbl = Label(text=f"[{sender}] {message}", markup=True, size_hint_y=None, height='30dp')
         self.chat_screen.ids.chat_box.add_widget(lbl)
         Clock.schedule_once(lambda dt: setattr(self.chat_screen.ids.scroll_view, 'scroll_y', 0))
 
-    def wake_word_listener(self):
+    def wake_word_listener(self) -> None:
         """
         Listens for the wake word "Jarvis" using Porcupine and starts recording audio when detected.   
         """
@@ -84,7 +85,7 @@ class MyKivyApp(App):
         except Exception as e:
             Clock.schedule_once(lambda dt, err=e: self.add_message(f"Error in calling up 'Jarvis': {err}", sender="error"))
 
-    def record_audio(self):
+    def record_audio(self) -> None:
         """
         Records audio from the microphone (simulated for 5 seconds) and sends it to the backend.
         """
@@ -119,7 +120,7 @@ class MyKivyApp(App):
         #Clock.schedule_once(lambda dt: self.add_message("Hang tight, I'm processing that for you!", sender="app"))
         self.send_audio_to_backend(filename)
     
-    def send_audio_to_backend(self, audio_filepath):
+    def send_audio_to_backend(self, audio_filepath: str) -> None:
         """
         Posts the recorded audio file to the /process_audio/ endpoint.
         """
@@ -136,7 +137,7 @@ class MyKivyApp(App):
         except Exception as e:
             Clock.schedule_once(lambda dt, err=e: self.add_message(f"Error sending audio: {err}", sender="error"))
     
-    def process_audio_response(self, data):
+    def process_audio_response(self, data: Dict[str, Any]) -> None:
         """
         Processes the JSON response from the audio API.
         """
@@ -165,7 +166,7 @@ class MyKivyApp(App):
         #Clock.schedule_once(lambda dt: self.add_message("Re-listening for wake word...", sender="app"))
         Clock.schedule_once(lambda dt: self.add_message("Just say 'Jarvis' if you need my help again!", sender="app"))
     
-    def play_audio(self, audio_url):
+    def play_audio(self, audio_url: str) -> None:
         """
         Loads and plays the audio using Kivy's SoundLoader.
         """
@@ -175,7 +176,7 @@ class MyKivyApp(App):
         else:
             Clock.schedule_once(lambda dt: self.add_message("Failed to load audio.", sender="error"))
     
-    def capture_video(self):
+    def capture_video(self) -> None:
         """
         Captures video for 5 seconds using the webcam (via OpenCV), sends it to the backend,
         and updates the chat UI with the video summary and plays the TTS audio.
@@ -234,7 +235,7 @@ class MyKivyApp(App):
         except Exception as e:
             Clock.schedule_once(lambda dt, err=e: self.add_message(f"Error during video capture: {err}", sender="error"))
     
-    def add_video(self, video_filepath):
+    def add_video(self, video_filepath: str) -> None:
         """
         Adds a Video widget to the chat UI to display the recorded video.
         The video will remain in the UI until the user closes the app.
